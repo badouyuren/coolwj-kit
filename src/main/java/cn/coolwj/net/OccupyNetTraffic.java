@@ -38,16 +38,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OccupyNetTraffic {
 
 
-    final static int max = 10;
+    final static int max = 1000;
     final static ExecutorService executorService = Executors.newFixedThreadPool(max);
     final static long MB = 1024 * 1024;
     final static long GB = 1024 * MB;
     final static long TB = 1024 * GB;
     final static OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(1, TimeUnit.MINUTES).readTimeout(1, TimeUnit.MINUTES).build();
-    final static AtomicLong size = new AtomicLong(0L);
-    final static AtomicLong time = new AtomicLong(0L);
+
 
     public static void main(String[] args) throws InterruptedException {
+        final AtomicLong size = new AtomicLong(0L);
+        final AtomicLong time = new AtomicLong(0L);
 
         while (true) {
 
@@ -69,11 +70,8 @@ public class OccupyNetTraffic {
                             long s = bytes.length;
                             long end = System.currentTimeMillis();
                             long cost = end - start;
-                            StringBuilder info = new StringBuilder(new Date().toString());
-                            info.append(" ")
-                                    .append(response)
-                                    .append(" ").append(s / MB).append("MB，")
-                                    .append(" 本次耗时：").append(formatMs(cost));
+                            StringBuilder info = new StringBuilder();
+                            info.append(" ").append(response).append(" ").append(s / MB).append("MB，").append(" 本次耗时：").append(formatMs(cost));
                             long totalSize = size.addAndGet(s);
                             info.append(" 累计已刷新").append(formatSize(totalSize));
 
@@ -82,8 +80,7 @@ public class OccupyNetTraffic {
                             long speed = totalSize / totalTime * 1000;
                             info.append(" 速度：").append(formatSize(speed)).append("/s");
 
-
-                            System.out.println(info);
+                            System.out.println(new Date().toString() + info);
                             bytes = null;
                         } catch (IOException ignored) {
                         }
