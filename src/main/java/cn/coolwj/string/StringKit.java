@@ -27,7 +27,6 @@ import com.alibaba.fastjson2.JSON;
 import com.google.common.base.Splitter;
 
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author Nigel Lee
@@ -35,7 +34,7 @@ import java.util.Scanner;
  */
 public class StringKit {
 
-    private final static  String input = """
+    private final static String input = """
             12_14
             2201-v21
             2201_v21_2
@@ -328,14 +327,16 @@ public class StringKit {
             ZYJT
             ZYJZ123
             ZYZC
-                        
-                        
             """;
 
     public static void main(String[] args) {
         List<String> list = Splitter.on("\n").trimResults().omitEmptyStrings().splitToList(input);
         String result = JSON.toJSONString(list);
+        System.out.println("idea http client param ");
         System.out.println(result);
+        System.out.println();
+        System.out.println("sql param ");
+        System.out.println("('" + String.join("','", list) + "')");
     }
 
 
