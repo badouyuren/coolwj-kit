@@ -1,4 +1,4 @@
-package org.example;
+package cn.coolwj.net;
 
 import com.google.common.collect.Lists;
 import okhttp3.*;
