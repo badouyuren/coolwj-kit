@@ -32,7 +32,17 @@ import java.util.List;
  * @author Nigel Lee
  * @date 2022/9/13
  */
-public class StringKit {
+public class EntCodeKit {
+
+    public static void main(String[] args) {
+        List<String> list = Splitter.on("\n").trimResults().omitEmptyStrings().splitToList(input);
+        String result = JSON.toJSONString(list);
+        System.out.println("idea http client param ");
+        System.out.println(result);
+        System.out.println();
+        System.out.println("sql param ");
+        System.out.println("('" + String.join("','", list) + "')");
+    }
 
     private final static String input = """
             12_14
@@ -329,15 +339,7 @@ public class StringKit {
             ZYZC
             """;
 
-    public static void main(String[] args) {
-        List<String> list = Splitter.on("\n").trimResults().omitEmptyStrings().splitToList(input);
-        String result = JSON.toJSONString(list);
-        System.out.println("idea http client param ");
-        System.out.println(result);
-        System.out.println();
-        System.out.println("sql param ");
-        System.out.println("('" + String.join("','", list) + "')");
-    }
+
 
 
 }
