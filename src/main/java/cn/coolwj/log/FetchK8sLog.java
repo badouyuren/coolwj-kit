@@ -32,7 +32,6 @@ import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,23 +47,26 @@ import java.util.stream.Collectors;
  * @author Nigel Lee
  * @date 2022/9/14
  */
-public class FetchGrayLog {
+public class FetchK8sLog {
 
     private final static String outputDir = "/Users/nigel/Desktop/";
-    public final static OkHttpClient CLIENT = new OkHttpClient();
+    private final static OkHttpClient CLIENT = new OkHttpClient();
     private final static String url = "https://sls.console.aliyun.com/console/logstoreindex/getLogs.json";
+    private final static String devTestEnv = "k8s-log-c368c7c9f726947528016e89a7c27fd41";
+    private final static String grayPreEnv = "k8s-log-ce5efe25b95054df19c699d30a0a9cabc";
+    private final static String productEnv = "k8s-log-c819060fdf91541b5a5aea87d8086cfe0";
 
     private final static String cookie = """
             t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; currentRegionId=cn-shenzhen; login_aliyunid_csrf=_csrf_tk_1089463119770125; aliyun_lang=zh; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Nvpdv3*W17NXmHlAJKNiIQfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd5_JUnoM22jKGEsDsSnbyLQXrmJK*H1vT5ERPp2356A*R; l=eBSawPORL2ofIBr1BOfZourza77TJIRVguPzaNbMiOCPOXfH5OiRW6ojHDLMCnGNn6l2-35PnfpwB7T8APUHQxv9-eTSsWLjndLh.; isg=BBISy6depYxJNthPzvfJTQk3Y970Ixa9szLtWNxrAkWw77Dpxrfcz5MOW0NTn45V; resourceFormData={%22uid1451945644432939%22:{%22indexDiff%22:%222.24%22%2C%22metricDiff%22:%22NaN%22%2C%22storageDiff%22:%220.96%22%2C%22ms%22:%220.0%22%2C%22ept%22:%2254588346879.0%22%2C%22sSMSDiff%22:%220.97%22%2C%22index%22:%22577338531852.0%22%2C%22storage%22:%2243572467325108.0%22%2C%22sSMSCount%22:%2287.0%22%2C%22outflowDiff%22:%22NaN%22%2C%22inflowDiff%22:%222.46%22%2C%22outflow%22:%220.0%22%2C%22sPhoneDiff%22:%22NaN%22%2C%22opCountDiff%22:%221.46%22%2C%22metric%22:%220.0%22%2C%22opCount%22:%225647674.0%22%2C%22inflow%22:%2281226234884.0%22%2C%22eptDiff%22:%222.82%22%2C%22etlDiff%22:%22NaN%22%2C%22etl%22:%220.0%22%2C%22msDiff%22:%22NaN%22%2C%22sPhoneCount%22:%220.0%22}}; pageSize=100; reverse=false 
             """.trim();
-    private final static String secToken = "5sCBYje8";
-    private final static String queryStr = "1f61e3b96ea40989";
 
+    private final static String logEnv = grayPreEnv;
+    private final static String queryStr = "1f61e3b96ea40989";
+    private final static Long from = LocalDateTime.of(2022, 9, 14, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2022, 10, 22, 23, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
     public static void main(String[] args) throws IOException {
         JSONArray list = new JSONArray();
-        long from = LocalDateTime.of(2022, 9, 14, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-        long to = LocalDateTime.of(2022, 10, 22, 23, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
         int page = 1;
         JSONArray jsonArray;
         do {
@@ -79,16 +81,12 @@ public class FetchGrayLog {
             sleep(1);
         } while (jsonArray.size() > 0);
 
-        list.sort(Comparator.comparing(item -> ((JSONObject) item).getString("content").substring(0, 24)));
-
-        List<String> contentList = Lists.newArrayList();
-        File file = FileUtil.file(outputDir + queryStr + "-" + System.currentTimeMillis() + ".log");
-        for (Object item : list) {
-            JSONObject jsonObject = (JSONObject) item;
-            String content = jsonObject.getString("content");
-            System.out.println(content);
-            contentList.add(content);
-        }
+        List<String> contentList = list.stream()
+                .map(item -> ((JSONObject) item).getString("content"))
+                .sorted(Comparator.comparing(item -> item.substring(0, 24)))
+                .peek(System.out::println)
+                .toList();
+        File file = FileUtil.file(outputDir + queryStr + "-" + from + "_" + to + ".log");
         FileUtil.writeLines(contentList, file, "utf-8");
 
         List<String> rawContent = Lists.newArrayList();
@@ -107,18 +105,16 @@ public class FetchGrayLog {
         FileUtil.appendLines(statics, file, "utf-8");
     }
 
+
     private static JSONObject getResponseJson(Integer page, Long from, Long to) throws IOException {
         FormBody formBody = new FormBody.Builder()
-                .add("secToken", secToken)
-                .add("query", FetchGrayLog.queryStr)
+                .add("ProjectName", logEnv)
                 .add("LogStoreName", "app-logsotre")
-                .add("ProjectName", "k8s-log-ce5efe25b95054df19c699d30a0a9cabc")
+                .add("query", FetchK8sLog.queryStr)
                 .add("from", from.toString())
                 .add("to", to.toString())
                 .add("Page", page.toString())
                 .add("Size", "100")
-                .add("Reverse", "false")
-                .add("pSql", "false")
                 .build();
         Request request = new Request.Builder().url(url).headers(HEADERS).post(formBody).build();
         try (Response response = CLIENT.newCall(request).execute()) {
@@ -126,6 +122,7 @@ public class FetchGrayLog {
             return JSONObject.parseObject(string);
         }
     }
+
 
     public final static Headers HEADERS = new Headers.Builder()
             .add("authority", "sls.console.aliyun.com")

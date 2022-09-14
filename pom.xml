@@ -35,6 +35,12 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.6</version>
         </dependency>
+        <!-- Java 时间扩展库，比原生更好 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.11.1</version>
+        </dependency>
         <!-- Apache 连接池 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
