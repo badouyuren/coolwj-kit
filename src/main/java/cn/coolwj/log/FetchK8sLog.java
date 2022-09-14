@@ -71,7 +71,7 @@ public class FetchK8sLog {
         int page = 1;
         JSONArray jsonArray;
         do {
-            JSONObject jsonObject = getResponseJson(page, from, to);
+            JSONObject jsonObject = getResponseJson(page);
             jsonArray = jsonObject.getJSONObject("data").getJSONArray("logs");
             System.out.println("已获取" + jsonArray.size() + "条日志");
             list.addAll(jsonArray);
@@ -107,13 +107,13 @@ public class FetchK8sLog {
     }
 
 
-    private static JSONObject getResponseJson(Integer page, Long from, Long to) throws IOException {
+    private static JSONObject getResponseJson(Integer page) throws IOException {
         FormBody formBody = new FormBody.Builder()
                 .add("ProjectName", logEnv)
                 .add("LogStoreName", "app-logsotre")
                 .add("query", FetchK8sLog.queryStr)
-                .add("from", from.toString())
-                .add("to", to.toString())
+                .add("from", FetchK8sLog.from.toString())
+                .add("to", FetchK8sLog.to.toString())
                 .add("Page", page.toString())
                 .add("Size", "100")
                 .build();
