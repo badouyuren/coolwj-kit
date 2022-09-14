@@ -61,11 +61,12 @@ public class FetchK8sLog {
             """.trim();
 
     private final static String logEnv = grayPreEnv;
-    private final static String queryStr = "1f61e3b96ea40989";
+    private final static String queryStr = "8d906c916e6ba329";
     private final static Long from = LocalDateTime.of(2022, 9, 14, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
     private final static Long to = LocalDateTime.of(2022, 10, 22, 23, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
     public static void main(String[] args) throws IOException {
+
         JSONArray list = new JSONArray();
         int page = 1;
         JSONArray jsonArray;
