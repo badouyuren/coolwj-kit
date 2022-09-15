@@ -23,6 +23,7 @@ package cn.coolwj.log;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  */
 
+import cn.coolwj.thread.ThreadKit;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
@@ -61,36 +62,37 @@ public class FetchK8sLog {
     private final static String productEcsEnv = "prod-crminfo-log";
     private final static String logEcsStoreName = "prod-crminfo-log";
 
+    private final static String logEnv = grayPreEnv;
+    private final static String logStore = logK8sStoreName;
+
     private final static String cookie = """
 
-            t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; currentRegionId=cn-shenzhen; aliyun_lang=zh; pageSize=100; reverse=false; _samesite_flag_=true; cookie2=1068ad0744396760d6abe8ba131f3da2; _tb_token_=f50e9ebaeb316; login_aliyunid_csrf=_csrf_tk_1089463119770125; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4MS6CSto67aJMTPT1WKSK3Mfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd51o_8IIPmhRNfhraq0i4cS7rmJK*H1vT5ERPp2356A*R; isg=BOXl0gjg6sbHOw-mlVa2tHLG9KcfIpm0GMOasefK8pwr_gdwrXY2htyfjGqIRrFs; l=eBSawPORL2ofIw8YBOfaPurza779YIR4iuPzaNbMiOCPOE1H5r5VW6oVzqLMCnGNn6l2-35PnfpwBoL81PUHQxv9-eTSsWLjXdLh.            
-
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; currentRegionId=cn-shenzhen; aliyun_lang=zh; pageSize=100; _samesite_flag_=true; cookie2=1068ad0744396760d6abe8ba131f3da2; _tb_token_=f50e9ebaeb316; resourceFormData={%22uid1451945644432939%22:{%22indexDiff%22:%220.93%22%2C%22metricDiff%22:%22NaN%22%2C%22storageDiff%22:%221.0%22%2C%22ms%22:%220.0%22%2C%22ept%22:%22159215743032.0%22%2C%22sSMSDiff%22:%220.29%22%2C%22index%22:%22535815400206.0%22%2C%22storage%22:%2243626950205276.0%22%2C%22sSMSCount%22:%2225.0%22%2C%22outflowDiff%22:%22NaN%22%2C%22inflowDiff%22:%220.95%22%2C%22outflow%22:%220.0%22%2C%22sPhoneDiff%22:%22NaN%22%2C%22opCountDiff%22:%220.98%22%2C%22metric%22:%220.0%22%2C%22opCount%22:%225560101.0%22%2C%22inflow%22:%2277261163832.0%22%2C%22eptDiff%22:%222.92%22%2C%22etlDiff%22:%22NaN%22%2C%22etl%22:%220.0%22%2C%22msDiff%22:%22NaN%22%2C%22sPhoneCount%22:%220.0%22}}; reverse=false; login_aliyunid_csrf=_csrf_tk_1089463119770125; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4FA8eW76uEU8VDEo5sg_c_Afq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd5*NQbHOqXstyJ5k1hPg1K*7rmJK*H1vT5ERPp2356A*R; isg=BOfnyBtSSNz27s3sa6hUXmSwdh2xbLtO7lXYe7lUR3adqAVqwzjjnKOpzqA2QJPG; l=eBSawPORL2ofIEU1BOfZPurza779-IRVguPzaNbMiOCPOuCH5jUGW6o2hxYMCnGNn6oe-35PnfpwB8Y8DPUHQxv9-eTSsWLjUdLh.
             """.trim();
 
-    private final static String logEnv = productEcsEnv;
-    private final static String logStore = logEcsStoreName;
-
-    private final static String queryStr = """
-            200540930681 and actionStatus__ss
-            """.trim();
     private final static Long from = LocalDateTime.of(2022, 9, 12, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
     private final static Long to = LocalDateTime.of(2022, 10, 22, 23, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static String queryStr = """
+             
+             afec9ef544c1eaa0
+             
+            """.trim();
+
 
     public static void main(String[] args) throws IOException {
-
         JSONArray list = new JSONArray();
         int page = 1;
         JSONArray jsonArray;
         do {
             JSONObject jsonObject = getResponseJson(page);
+            if (jsonObject.getJSONObject("data") == null) {
+                throw new RuntimeException("需要重新获取登录信息 https://sls.console.aliyun.com/lognext/project/" + logEnv + "/logsearch/" + logStore);
+            }
             jsonArray = jsonObject.getJSONObject("data").getJSONArray("logs");
             list.addAll(jsonArray);
             System.out.println("已获取第" + page + "页的" + jsonArray.size() + "条日志，累计已获取" + list.size() + "条日志");
             page++;
-            if (page > 100) {
-                return;
-            }
-            sleep(1);
+            //ThreadKit.sleep(1);
         } while (jsonArray.size() > 0);
 
         List<String> contentList = list.stream()
@@ -100,21 +102,6 @@ public class FetchK8sLog {
                 .toList();
         File file = FileUtil.file(outputDir + queryStr + "-" + from + "_" + to + ".log");
         FileUtil.writeLines(contentList, file, "utf-8");
-
-//        List<String> rawContent = Lists.newArrayList();
-//        for (String content : contentList) {
-//            String[] split = content.split("] - ");
-//            rawContent.add(split[1]);
-//        }
-//        FileUtil.appendString("\r\r", file, "utf-8");
-//        List<String> statics = Lists.newArrayList();
-//        rawContent.stream().collect(Collectors.toMap(Function.identity(), item -> 1, Integer::sum)).forEach((k, v) -> {
-//            if (v > 2) {
-//                String str = k + " ======== " + v;
-//                statics.add(str);
-//            }
-//        });
-//        FileUtil.appendLines(statics, file, "utf-8");
     }
 
 
@@ -151,17 +138,4 @@ public class FetchK8sLog {
             .add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36")
             .add("cookie", cookie)
             .build();
-
-    private static void sleep(int second) {
-        System.out.print("⌛️等待");
-        for (int i = 0; i <= second; i++) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-            }
-            System.out.print("🐶");
-        }
-        System.out.println();
-    }
-
 }
