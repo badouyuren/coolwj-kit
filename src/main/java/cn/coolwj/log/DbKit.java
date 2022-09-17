@@ -31,7 +31,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,26 +65,28 @@ public class DbKit {
                     conn.setAutoCommit(false);
 
                     Statement stmt = conn.createStatement();
-                    stmt.executeQuery("select count(*) from p_file_manage_oss where id>10000 and id < 1000000000000");
-                    ThreadKit.sleep(2);
-                    stmt.executeQuery("select count(*) from p_file_manage_oss where id>30000 and id < 3000000000000");
-                    ThreadKit.sleep(4);
-                    stmt.executeQuery("select count(*) from p_file_manage_oss where id>20000 and id < 2000000000000");
-                    ThreadKit.sleep(6);
-                    stmt.executeQuery("select count(*) from p_file_manage_oss where id>40000 and id < 6000000000000");
-                    ThreadKit.sleep(7);
+                    for (int i = 0; i < 10; i++) {
+                        ResultSet resultSet = stmt.executeQuery("select * from p_file_manage_oss where id < random() and oss_url like '%2%' and oss_size is null");
+                        while (resultSet.next()) {
+                            long id = resultSet.getLong("id");
+                            System.out.println("oss id: " + id);
+                        }
+                    }
 
                     ResultSet set = stmt.executeQuery("select nextval('SEQ_PAAS_GLOBAL') as id");
                     Long id = null;
                     while (set.next()) {
                         id = set.getLong("id");
-                        System.out.println("ID: " + id);
+                        System.out.println("insert id : " + id);
                     }
 
                     String sql = """
-                            INSERT INTO p_data ( id, code, meta_id, ent_code, name, l_1, l_2 )  VALUES  (%s, '%s','%s', 'HECOM_CRM', '201812151821-17', cast(power(random(),random()) as text),  cast(cbrt(random()) as text))
+                            INSERT INTO p_data (
+                            id, code, meta_id, ent_code, name, l_1, l_2,l_3 ) 
+                            VALUES 
+                            ( %s, '%s', '%s', 'HECOM_CRM', cast(random() as text), cast(power(random(),random()) as text),  cast(cbrt(random()) as text), '%s')
                             """;
-                    String insertSql = String.format(sql, id, id, id);
+                    String insertSql = String.format(sql, id, id, id, MaxPrime.prime);
                     int rs = stmt.executeUpdate(insertSql);
                     System.out.println(rs);
 
@@ -110,6 +111,5 @@ public class DbKit {
             }
         }
     }
-
 
 }

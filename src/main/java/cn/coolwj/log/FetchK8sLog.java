@@ -25,6 +25,7 @@ package cn.coolwj.log;
 
 import cn.coolwj.thread.ThreadKit;
 import cn.hutool.core.io.FileUtil;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.Lists;
@@ -34,6 +35,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,23 +69,21 @@ public class FetchK8sLog {
     private final static String productEcsEnv = "prod-crminfo-log";
     private final static String logEcsStoreName = "prod-crminfo-log";
 
-    private final static String logEnv = grayPreEnv;
-    private final static String logStore = logK8sStoreName;
+    private final static String logEnv = productEcsEnv;
+    private final static String logStore = logEcsStoreName;
 
     private final static String cookie = """
 
-             t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; currentRegionId=cn-shenzhen; aliyun_lang=zh; pageSize=100; _samesite_flag_=true; cookie2=1068ad0744396760d6abe8ba131f3da2; _tb_token_=f50e9ebaeb316; reverse=false; login_aliyunid_csrf=_csrf_tk_1089463119770125; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4GeD2QhPG7yZFpRyBtDGR*Qfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd50MqMUsJZq9bXMOXHYWJUxLrmJK*H1vT5ERPp2356A*R; isg=BJaWPyZD6UK1qNxb8kMVEa1b50qYN9px127pbAD_0nkUwzRdasX-gB-yXlcv19KJ; l=eBSawPORL2ofIpudBOfZFurza77O8IRqmuPzaNbMiOCPOX5H5Y2PW6oD_B8MCnhNn68J-35PnfpwBcYtNyz6Qxv9-eTSsWLjndLh.; resourceFormData={%22uid1451945644432939%22:{%22indexDiff%22:%220.99%22%2C%22metricDiff%22:%22NaN%22%2C%22storageDiff%22:%221.08%22%2C%22ms%22:%220.0%22%2C%22ept%22:%22221412459880.0%22%2C%22sSMSDiff%22:%222.88%22%2C%22index%22:%22531072624047.0%22%2C%22storage%22:%2246987115144337.0%22%2C%22sSMSCount%22:%2272.0%22%2C%22outflowDiff%22:%22Infinity%22%2C%22inflowDiff%22:%220.99%22%2C%22outflow%22:%2245161.0%22%2C%22sPhoneDiff%22:%22NaN%22%2C%22opCountDiff%22:%220.96%22%2C%22metric%22:%220.0%22%2C%22opCount%22:%225349410.0%22%2C%22inflow%22:%2276593464407.0%22%2C%22eptDiff%22:%221.39%22%2C%22etlDiff%22:%22NaN%22%2C%22etl%22:%220.0%22%2C%22msDiff%22:%22NaN%22%2C%22sPhoneCount%22:%220.0%22}}
-                                                                                       
-                                                                                       
-                                                                                       
+            t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; pageSize=100; _samesite_flag_=true; cookie2=1068ad0744396760d6abe8ba131f3da2; _tb_token_=f50e9ebaeb316; activeRegionId=cn-beijing; currentRegionId=cn-beijing; login_aliyunid_csrf=_csrf_tk_1089463119770125; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Js0SU7oP_17lMGumI7pf4cfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd5*ivKkKmZiOa0CvKKDrkS4nrmJK*H1vT5ERPp2356A*R; resourceFormData={%22uid1451945644432939%22:{%22indexDiff%22:%221.02%22%2C%22metricDiff%22:%22NaN%22%2C%22storageDiff%22:%220.87%22%2C%22ms%22:%220.0%22%2C%22ept%22:%22260273145412.0%22%2C%22sSMSDiff%22:%221.0%22%2C%22index%22:%22542205839700.0%22%2C%22storage%22:%2240839932527395.0%22%2C%22sSMSCount%22:%2272.0%22%2C%22outflowDiff%22:%2218.84%22%2C%22inflowDiff%22:%221.03%22%2C%22outflow%22:%22850673.0%22%2C%22sPhoneDiff%22:%22NaN%22%2C%22opCountDiff%22:%221.06%22%2C%22metric%22:%220.0%22%2C%22opCount%22:%225648167.0%22%2C%22inflow%22:%2278705368432.0%22%2C%22eptDiff%22:%221.18%22%2C%22etlDiff%22:%22NaN%22%2C%22etl%22:%220.0%22%2C%22msDiff%22:%22NaN%22%2C%22sPhoneCount%22:%220.0%22}}; isg=BLS07_fJa8Kviv61PClX15vBhXQmjdh34aSLAk4Udz_CuVQDdpwNB2Y4OflhQRDP; l=eBSawPORL2ofIo35BO5ahurza77t2IOb4sPzaNbMiInca6Z1GIUE_OCEVSIyPdtj_tCLeetPatc9QdLHRn1RwxDDB_joxf9Z3xvO.; reverse=false                                                                                       
+                                                                                                   
+                                                                                                   
             """.trim();
 
-    private final static Long from = LocalDateTime.of(2022, 9, 16, 10, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2022, 9, 16, 10, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long from = LocalDateTime.of(2022, 9, 14, 10, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2022, 9, 16, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
     private final static String queryStr = """
-            
-            60ce282eb1685697
-           
+                        
+5ea9776a73dedbee                      
             """.trim();
 
 
@@ -109,6 +109,8 @@ public class FetchK8sLog {
                 .toList();
         File file = FileUtil.file(outputDir + queryStr + "-" + from + "_" + to + ".log");
         FileUtil.writeLines(contentList, file, "utf-8");
+
+
     }
 
 
