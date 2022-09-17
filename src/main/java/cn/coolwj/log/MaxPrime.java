@@ -45,9 +45,9 @@ public class MaxPrime {
         return new BigDecimal(2).pow(82589933).subtract(BigDecimal.ONE).toString();
     }
 
-    public static String readPrime(){
+    public static String readPrime() {
         try {
-            return FileUtils.readFileToString(new File(FileUtils.getUserDirectoryPath()+"/Projects/nigel/coolwj-kit/src/main/java/cn/coolwj/log/MaxPrime.txt"), Charset.defaultCharset());
+            return FileUtils.readFileToString(new File(FileUtils.getUserDirectoryPath() + "/Projects/nigel/coolwj-kit/src/main/data/MaxPrime.txt"), Charset.defaultCharset());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
