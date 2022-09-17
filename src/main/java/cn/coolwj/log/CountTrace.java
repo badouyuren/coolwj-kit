@@ -39,7 +39,7 @@ import java.util.Map;
  * @date 2022/9/16
  */
 public class CountTrace {
-    private final static String outputDir = "/Users/nigel/Desktop/";
+    private final static String outputDir = "/Users/nigel/Downloads/";
 
     public static void main(String[] args) throws IOException {
         List<String> contentList = FileUtils.readLines(new File(outputDir + "2.csv"), Charset.defaultCharset());
@@ -50,11 +50,11 @@ public class CountTrace {
                 continue;
             }
             String[] array = content.split(",");
-            if (array.length < 2) {
+            if (array.length < 5) {
                 continue;
             }
 
-            String traceId = content.split(",")[1];
+            String traceId = content.split(",")[4];
             Integer count = traceIdMap.computeIfAbsent(traceId, k -> 0);
             traceIdMap.put(traceId, ++count);
         }

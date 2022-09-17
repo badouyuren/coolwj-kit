@@ -30,13 +30,13 @@ package cn.coolwj.thread;
 public class ThreadKit {
 
     public static void sleep(int second) {
-        System.out.print("⌛️等待");
+        System.out.println("⌛️等待");
         for (int i = 0; i <= second; i++) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             }
-            System.out.print("🐶");
+           // System.out.print("🐶");
         }
         System.out.println();
     }
