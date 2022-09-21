@@ -23,7 +23,7 @@ package cn.coolwj.cicd;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  */
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.Lists;
 import okhttp3.Headers;
 import okhttp3.MediaType;
