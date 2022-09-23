@@ -23,9 +23,8 @@ package cn.coolwj.cicd;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  */
 
-import cn.hecom.paas.common.base.util.DateUtils;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.common.base.Splitter;
 import com.google.common.base.Stopwatch;
 import okhttp3.FormBody;
@@ -480,7 +479,7 @@ public class CicdExecutor extends CicdConfig {
         Response response = CLIENT.newCall(request).execute();
         String resultStr = Objects.requireNonNull(response.body()).string();
         System.out.println(project.getName() + "分支列表" + branch + " " + resultStr);
-        return JSONObject.parseArray(resultStr);
+        return JSONArray.parseArray(resultStr);
     }
 
 
@@ -497,7 +496,7 @@ public class CicdExecutor extends CicdConfig {
         param.put("id", project.getId());
         param.put("tag_name", tagName);
         param.put("ref", branch);
-        param.put("message", "tag by " + AUTHOR + " on " + DateUtils.getCurrentDateTime());
+        param.put("message", "tag by " + AUTHOR + " on " +"");
 
         String url = String.format(TAG_NEW, project.getId());
         System.out.println("请求地址：" + url);
@@ -547,7 +546,7 @@ public class CicdExecutor extends CicdConfig {
         Response response = CLIENT.newCall(request).execute();
         String resultStr = Objects.requireNonNull(response.body()).string();
         System.out.println(project.getName() + "查询MR列表响应结果：" + resultStr);
-        return JSONObject.parseArray(resultStr);
+        return JSONArray.parseArray(resultStr);
     }
 
     private static String createMerge(CicdProject project, String sourceBranch, String targetBranch) throws IOException {
@@ -628,7 +627,7 @@ public class CicdExecutor extends CicdConfig {
         Response response = CLIENT.newCall(request).execute();
         String resultStr = Objects.requireNonNull(response.body()).string();
         System.out.println(project.getName() + "查询MR Diff List 响应结果：" + resultStr);
-        JSONArray array = JSONObject.parseArray(resultStr);
+        JSONArray array = JSONArray.parseArray(resultStr);
         if (CollectionUtils.isEmpty(array)) {
             return true;
         }
