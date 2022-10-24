@@ -76,7 +76,18 @@ public class FetchK8sLog {
     private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
-t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-beijing; _samesite_flag_=true; cookie2=1f110565823fe04240ebcdbf9bbf44b0; _tb_token_=706f7a387e856; pageSize=100; reverse=false; login_aliyunid_csrf=_csrf_tk_1166965220570534; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Nz8rB4Pc5UPZmkUcO4uHgMfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd54LF5nzf3u3xLN0vqwj4tdnrmJK*H1vT5ERPp2356A*R; isg=BC8v8Nx_kOXYnpUE88ActnyovkU51IP2RAz8z0G8ph6lkE2SS6EZRLsBFoiu6Ftu; l=eBSawPORL2ofIBVGBOfwnurza77OGIRVguPzaNbMiOCPOB1H5HOcW6PcU5YMCnGNnsnw-3o-M93yBzTukPUnQxv9-eTSsWLjUdLh.            """.trim();
+
+
+
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-beijing; _samesite_flag_=true; cookie2=1f110565823fe04240ebcdbf9bbf44b0; _tb_token_=706f7a387e856; pageSize=100; reverse=false; login_aliyunid_csrf=_csrf_tk_1166965220570534; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Nz8rB4Pc5UPZmkUcO4uHgMfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd54LF5nzf3u3xLN0vqwj4tdnrmJK*H1vT5ERPp2356A*R; isg=BC8v8Nx_kOXYnpUE88ActnyovkU51IP2RAz8z0G8ph6lkE2SS6EZRLsBFoiu6Ftu; l=eBSawPORL2ofIBVGBOfwnurza77OGIRVguPzaNbMiOCPOB1H5HOcW6PcU5YMCnGNnsnw-3o-M93yBzTukPUnQxv9-eTSsWLjUdLh.        
+    
+    
+    
+    
+    
+    
+    
+    """.trim();
 
     private final static Long from = LocalDateTime.of(2022, 10, 10, 14, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
     private final static Long to = LocalDateTime.of(2022, 10, 30, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
@@ -88,13 +99,15 @@ t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lan
     //7f27bda347aa9190
 
     public static void main(String[] args) throws IOException {
+
+
         JSONArray list = new JSONArray();
         int page = 1;
         JSONArray jsonArray;
         do {
             JSONObject jsonObject = getResponseJson(page);
             if (jsonObject.getJSONObject("data") == null) {
-                throw new RuntimeException("需要重新获取登录信息 https://sls.console.aliyun.com/lognext/project/" + logEnv + "/logsearch/" + logStore);
+                throw new RuntimeException("需要 重新获取登录信息 https://sls.console.aliyun.com/lognext/project/" + logEnv + "/logsearch/" + logStore);
             }
             jsonArray = jsonObject.getJSONObject("data").getJSONArray("logs");
             list.addAll(jsonArray);
@@ -107,7 +120,7 @@ t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lan
                 .sorted(Comparator.comparing(item -> item.substring(0, 24)))
                 .peek(System.out::println)
                 .toList();
-        File file = FileUtil.file(outputDir + queryStr + "-" + from + "_" + to + ".log");
+        File file = FileUtil.file(outputDir + queryStr + " - " + from + "_" + to + ".log");
         FileUtil.writeLines(contentList, file, "utf-8");
 
 
