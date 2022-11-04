@@ -23,33 +23,22 @@ package cn.coolwj.log;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  */
 
-import cn.coolwj.thread.ThreadKit;
 import cn.hutool.core.io.FileUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.google.common.collect.Lists;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @author Nigel Lee
@@ -72,16 +61,14 @@ public class FetchK8sLog {
     //private final static String logEnv = productEcsEnv;
     //private final static String logStore = ecsStoreName;
 
-    private final static String logEnv = productK8sEnv;
+    private final static String logEnv = grayPreEnv;
     private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
 
 
 
-t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-beijing; _samesite_flag_=true; cookie2=1f110565823fe04240ebcdbf9bbf44b0; _tb_token_=706f7a387e856; pageSize=100; reverse=false; login_aliyunid_csrf=_csrf_tk_1166965220570534; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Nz8rB4Pc5UPZmkUcO4uHgMfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd54LF5nzf3u3xLN0vqwj4tdnrmJK*H1vT5ERPp2356A*R; isg=BC8v8Nx_kOXYnpUE88ActnyovkU51IP2RAz8z0G8ph6lkE2SS6EZRLsBFoiu6Ftu; l=eBSawPORL2ofIBVGBOfwnurza77OGIRVguPzaNbMiOCPOB1H5HOcW6PcU5YMCnGNnsnw-3o-M93yBzTukPUnQxv9-eTSsWLjUdLh.        
-    
-    
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; activeRegionId=cn-beijing; currentRegionId=cn-beijing; aliyun_lang=zh; login_aliyunid_csrf=_csrf_tk_1739867527238070; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4CRb_MAKIxba5nyZ6JpFTtYfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd53GL7VID*r6WdLhfwm8rbv_rmJK*H1vT5ERPp2356A*R; isg=BN_f5kI3wPJPmcUUo3DMxixYbjVpRDPm9fYkQHEsJg7VAPyCexDaNH3Rxph-mAte; l=eBSawPORL2ofINe1BOfwFurza77OTIRcguPzaNbMiOCPO7565z_PW6r-UpLBCnGNn6rD-3R5j0QBBu87aPaeQxv9-eTSsWLjndLh.    
     
     
     
@@ -89,14 +76,14 @@ t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lan
     
     """.trim();
 
-    private final static Long from = LocalDateTime.of(2022, 10, 10, 14, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2022, 10, 30, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
     private final static String queryStr = """
-                8f899021517193dd        
-                                  
+3983b362de08825f                                  
             """.trim();
-//200535948437
-    //7f27bda347aa9190
+
+
+    private final static Long from = LocalDateTime.of(2022, 11, 1, 14, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2022, 11, 10, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+
 
     public static void main(String[] args) throws IOException {
 
