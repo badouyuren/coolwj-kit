@@ -61,28 +61,24 @@ public class FetchK8sLog {
     //private final static String logEnv = productEcsEnv;
     //private final static String logStore = ecsStoreName;
 
-    private final static String logEnv = grayPreEnv;
+    private final static String logEnv = productK8sEnv;
     private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
 
 
 
-t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; activeRegionId=cn-beijing; currentRegionId=cn-beijing; aliyun_lang=zh; login_aliyunid_csrf=_csrf_tk_1739867527238070; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4CRb_MAKIxba5nyZ6JpFTtYfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd53GL7VID*r6WdLhfwm8rbv_rmJK*H1vT5ERPp2356A*R; isg=BN_f5kI3wPJPmcUUo3DMxixYbjVpRDPm9fYkQHEsJg7VAPyCexDaNH3Rxph-mAte; l=eBSawPORL2ofINe1BOfwFurza77OTIRcguPzaNbMiOCPO7565z_PW6r-UpLBCnGNn6rD-3R5j0QBBu87aPaeQxv9-eTSsWLjndLh.    
-    
-    
-    
-    
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-beijing; login_aliyunid_csrf=_csrf_tk_1112568759908859; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4L9ZkUJaTyRsogSC6NxXSOIfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd5_py1YGmLY6cYnnSCzsMKP3rmJK*H1vT5ERPp2356A*R; isg=BCYmj0KWecYtwyyLghPlwb1rd5qoB2rBhCWNvxDPKskkk8StepRw0Plq74cfEmLZ; l=eBSawPORL2ofIuzdBOfZourza77tJIR2IuPzaNbMiOCPOgCH59_AW6zozUTMCnGNn6zH-3R5j0QBB4TZnyz6gxv9-eTSsWLjUdLh.; pageSize=20    
     
     """.trim();
 
     private final static String queryStr = """
-3983b362de08825f                                  
+dad7e35949462b7e                                  
             """.trim();
 
 
-    private final static Long from = LocalDateTime.of(2022, 11, 1, 14, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2022, 11, 10, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long from = LocalDateTime.of(2022, 11, 15, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2022, 11, 18, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
 
     public static void main(String[] args) throws IOException {
