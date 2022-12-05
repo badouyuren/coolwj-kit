@@ -34,8 +34,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -48,17 +51,15 @@ public class ChromeUtils {
     private final static ExecutorService executorService = Executors.newCachedThreadPool();
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         final AtomicLong count = new AtomicLong(0L);
         String url = "https://h.xinhuaxmt.com/vh512/share/11217552";
         System.setProperty("webdriver.chrome.driver", "/Users/nigel/Projects/nigel/coolwj-kit/src/main/data/chromedriver");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--window-size=80,900");
-        for (int i = 0; i < 26; i++) {
-            Thread t = new Thread(() -> {
-                duang(url, chromeOptions, count);
-            });
-            executorService.execute(t);
+        for (int i = 0; i < 30; i++) {
+            executorService.execute(() -> duang(url, chromeOptions, count));
+            Thread.sleep(i * 1000);
         }
     }
 
@@ -68,11 +69,14 @@ public class ChromeUtils {
         try {
             while (true) {
                 driver.get(url);
-                // WebElement txt = new WebDriverWait(driver, 100).until(ExpectedConditions.presenceOfElementLocated(By.tagName("span")));
-                //JavascriptExecutor jse = (JavascriptExecutor)driver;
-                //jse.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+                new WebDriverWait(driver, Duration.ofSeconds(23)).until(ExpectedConditions.titleContains("上证研究"));
+                WebElement webElement = driver.findElement(By.id("app"));
+
+               // webElement.get
+              //  System.out.println(webElement.getText());
+
                 try {
-                    Thread.sleep(3 * 1000);
+                    Thread.sleep(1* 1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
