@@ -68,17 +68,16 @@ public class FetchK8sLog {
 
 
 
-t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-beijing; login_aliyunid_csrf=_csrf_tk_1112568759908859; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4L9ZkUJaTyRsogSC6NxXSOIfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd5_py1YGmLY6cYnnSCzsMKP3rmJK*H1vT5ERPp2356A*R; isg=BCYmj0KWecYtwyyLghPlwb1rd5qoB2rBhCWNvxDPKskkk8StepRw0Plq74cfEmLZ; l=eBSawPORL2ofIuzdBOfZourza77tJIR2IuPzaNbMiOCPOgCH59_AW6zozUTMCnGNn6zH-3R5j0QBB4TZnyz6gxv9-eTSsWLjUdLh.; pageSize=20    
-    
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-hangzhou; login_aliyunid_csrf=_csrf_tk_1663269890996083; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Jwm1VEmFwG2sB03QUmnemEfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd58kfHH3lAQ4*CMuAn5OGZVjrmJK*H1vT5ERPp2356A*R; isg=BO7uN1zCAVRn8HQjigstmTUDP0Kw77LpfN11Vxi3GfGs-4xVgnzG-5n6t28XF6oB; l=fBSawPORL2ofIwTKBOfCEurza779xIR2muPzaNbMi9fPOTfH5KkfW65ILJ8MCnGNEsL6-3R5j0QBBVYajPaeQxv9-eTSsWLjndLnwpzHU    
     """.trim();
 
     private final static String queryStr = """
-dad7e35949462b7e                                  
+a71408ce0261ff87                                  
             """.trim();
 
 
-    private final static Long from = LocalDateTime.of(2022, 11, 15, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2022, 11, 18, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long from = LocalDateTime.of(2022, 11, 22, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2022, 11, 23, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
 
     public static void main(String[] args) throws IOException {
