@@ -58,11 +58,11 @@ public class FetchK8sLog {
     private final static String productEcsEnv = "prod-crminfo-log";
     private final static String ecsStoreName = "prod-crminfo-log";
 
-    //private final static String logEnv = productEcsEnv;
-    //private final static String logStore = ecsStoreName;
+    private final static String logEnv = productEcsEnv;
+    private final static String logStore = ecsStoreName;
 
-    private final static String logEnv = demoPreEnv;
-    private final static String logStore = k8sStoreName;
+    //private final static String logEnv = demoPreEnv;
+    //private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
 
@@ -79,8 +79,8 @@ e4bd37a8758b6bf7
             """.trim();
 
 
-    private final static Long from = LocalDateTime.of(2023, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2023, 1, 4, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long from = LocalDateTime.of(2023, 1, 3, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2023, 1, 3, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
 
     public static void main(String[] args) throws IOException {
