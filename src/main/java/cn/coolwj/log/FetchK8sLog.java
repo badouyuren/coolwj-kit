@@ -58,11 +58,11 @@ public class FetchK8sLog {
     private final static String productEcsEnv = "prod-crminfo-log";
     private final static String ecsStoreName = "prod-crminfo-log";
 
-    private final static String logEnv = productEcsEnv;
-    private final static String logStore = ecsStoreName;
+    //private final static String logEnv = productEcsEnv;
+    //private final static String logStore = ecsStoreName;
 
-    //private final static String logEnv = demoPreEnv;
-    //private final static String logStore = k8sStoreName;
+    private final static String logEnv = productEcsEnv;
+    private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
 
