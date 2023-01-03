@@ -23,12 +23,15 @@ package cn.coolwj.log;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  */
 
+import com.google.common.base.Splitter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author Nigel Lee
@@ -37,8 +40,20 @@ import java.nio.charset.Charset;
 public class MaxPrime {
 
     public static void main(String[] args) {
-        String mac = readPrime();
-        System.out.println(makePrime());
+
+        String aa = "你好/我/是";
+        System.out.println(aa);
+
+        List<String> aaa =  Splitter.on("/").splitToList(aa);
+
+        String[] bb=  StringUtils.split(aa,"/");
+
+        System.out.println();
+
+
+
+        //String mac = readPrime();
+        //System.out.println(makePrime());
     }
 
     public static String makePrime() {

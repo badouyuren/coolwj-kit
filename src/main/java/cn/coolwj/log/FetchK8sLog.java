@@ -51,8 +51,8 @@ public class FetchK8sLog {
     private final static String url = "https://sls.console.aliyun.com/console/logstoreindex/getLogs.json";
 
     private final static String devTestEnv = "k8s-log-c368c7c9f726947528016e89a7c27fd41";
-    private final static String grayPreEnv = "k8s-log-ce5efe25b95054df19c699d30a0a9cabc";
-    private final static String productK8sEnv = "k8s-log-c819060fdf91541b5a5aea87d8086cfe0";
+    private final static String demoPreEnv = "k8s-log-ce5efe25b95054df19c699d30a0a9cabc";
+    private final static String grayProductK8sEnv = "k8s-log-c819060fdf91541b5a5aea87d8086cfe0";
     private final static String k8sStoreName = "app-logsotre";
 
     private final static String productEcsEnv = "prod-crminfo-log";
@@ -61,23 +61,26 @@ public class FetchK8sLog {
     //private final static String logEnv = productEcsEnv;
     //private final static String logStore = ecsStoreName;
 
-    private final static String logEnv = productK8sEnv;
+    private final static String logEnv = demoPreEnv;
     private final static String logStore = k8sStoreName;
 
     private final static String cookie = """
 
+t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; currentRegionId=cn-hangzhou; aliyun_lang=zh; login_aliyunid_csrf=_csrf_tk_1508372388932019; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4EUiavQCXVEedIFVfntkE1Qfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd528Z8oNMai_o0P21wbcA197rmJK*H1vT5ERPp2356A*R; isg=BENDtHvLJBn2-elAp3woKuAM0gHtuNf6B9tibnUg3aIZNGFW_4yrSKClqsx6lC_y; l=fBSawPORL2ofI9E-BOfZEurza779KIRVguPzaNbMi9fP9gCH5-ZfW670wfLMCnGNEsfw-3rMJOyDBqY8qPUHQxv9-eTSsWLjndLnwpzHU
 
 
-t=14bb8ce9b0b3c4e4a787fdbf268b58a2; aliyun_site=CN; aliyun_choice=CN; aliyun_lang=zh; currentRegionId=cn-hangzhou; login_aliyunid_csrf=_csrf_tk_1663269890996083; login_aliyunid="liweijie @ 1451945644432939"; login_aliyunid_ticket=jwrR9QpvN9icQ0VRdDIr4Jwm1VEmFwG2sB03QUmnemEfq1S1E2ml6JYlY4q9CyLstMknfiSc2GhOwNcWzj5bYLpKzKZ49O80KpzxYXWJ0WPzFXDzr7rhZ_Dua5Qyv2KMv85szYAdhP4$; login_aliyunid_sc=74u48x24xL7xCj1SQ9*cYL0T_GM6j755fVmYnUBCAR8QPNbNr_5DOgGqri7a60Fu56CirX_*9VBpfkTFdJTd58kfHH3lAQ4*CMuAn5OGZVjrmJK*H1vT5ERPp2356A*R; isg=BO7uN1zCAVRn8HQjigstmTUDP0Kw77LpfN11Vxi3GfGs-4xVgnzG-5n6t28XF6oB; l=fBSawPORL2ofIwTKBOfCEurza779xIR2muPzaNbMi9fPOTfH5KkfW65ILJ8MCnGNEsL6-3R5j0QBBVYajPaeQxv9-eTSsWLjndLnwpzHU    
-    """.trim();
+
+
+
+""".trim();
 
     private final static String queryStr = """
-a71408ce0261ff87                                  
+e4bd37a8758b6bf7                                  
             """.trim();
 
 
-    private final static Long from = LocalDateTime.of(2022, 11, 22, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
-    private final static Long to = LocalDateTime.of(2022, 11, 23, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long from = LocalDateTime.of(2023, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.ofHours(8));
+    private final static Long to = LocalDateTime.of(2023, 1, 4, 23, 15, 0).toEpochSecond(ZoneOffset.ofHours(8));
 
 
     public static void main(String[] args) throws IOException {
